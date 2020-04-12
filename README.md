@@ -1,8 +1,8 @@
-### ABCD_geneticQC
+# ABCD_geneticQC
 
 This is the script to run QC in the ABCD dataset.
 
-## Install the packages
+#### Install the packages
 
 1. Plink
 http://zzz.bwh.harvard.edu/plink/download.shtml
