@@ -70,6 +70,51 @@ Basic SNP level and sample level QC excluding HWE at a SNP level and excessive h
 3.3: check-sex, followed by remove --> QC3output
 
 ```{bash}
+run 3_BasicQC.sh
+```
 
-run ./3_BasicQC.sh
+### Step 4: Merge with 1000G and run KING to calculate relatedness
+To conduct PCA and identify genetic ancestry subgroups, first merge with 1000G and then run KING kinship on all individuals (inc 1000G).
+There are two scripts here. Script a is the basic script if the --bmerge isn't perfect. Script 'b' is the alternate script for when '--bmerge is perfect'. 
+
 ```{bash}
+run 4a_mergewith1000G.sh
+```
+or 
+
+```{bash}
+run 4b_mergewith1000G.sh
+```
+
+### Step 5: Generating PCS with GENESIS
+This takes the files generated, prunes, identified unrelated individuals from the kinship matrix, calculates PCs in the unrelated individuals, and then projects PCs on the related individuals
+
+```{bash}
+Rscript 5_PCswithGENESIS.R
+```
+
+### Step 6: Using UMAP to identify cluster
+This step requires interaction and making decisions. This also requires Dataset_1KG_population.txt to better map self-identified ethncities to genetic ancestry. This uses the PCs created in Step 5. Edit 6_UMAPclustering.R and use it on an Rstudio to creat plots.
+
+
+### Step 7: Second round of QC at cluster level
+Now that clusters have been identified, we can do the second round of QC - HWE at SNP level and remove samples with excessive heterozygosity at an individual level.
+
+```{bash}
+run 7_secondroudnQC.sh
+```
+
+### Step 8: Combine, and run basic check for imputation
+Now, combine all the independent cluster files, keep only SNPs found in atleast 5% (again, this may have been skewed with the HWE), generate frequency file, and run a check to see if it is ready for imputation.
+
+```{bash}
+run 8_combineandcheck.sh
+```
+
+### Step 9: Clean files files and generate vcf for each chromosome
+This is the final pre-imputation step. We  clean the plink binary to make it ready for imputation, seperate it into 23 chromosomes (23rd being the X chromosome), and create vcfs. 
+
+```{bash}
+run 9_finalstep.sh
+```
+
