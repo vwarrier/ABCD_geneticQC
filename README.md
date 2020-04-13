@@ -61,10 +61,15 @@ Rscript 1_updatefam.R
 ### Step 2: Check Genomic Build
 This will create a genomic build file. Ideally, we want to work with hg19 as the 1000 Genomes file is hg19. 
 
+
+
+### Step 3: Run SNP level and sample-level QC
+Basic SNP level and sample level QC excluding HWE at a SNP level and excessive heterogeneity at a sample level due to multiple ancestries.
+3.1: geno 0.01 --> QC1output
+3.2: mind0.05 and me 0.05 0.1 --> QC2outupt
+3.3: check-sex, followed by remove --> QC3output
+
 ```{bash}
 
-### Step 2: Run SNP level and sample-level QC
-Basic SNP level and sample level QC excluding HWE at a SNP level and excessive heterogeneity at a sample level due to multiple ancestries.
-
-
+run ./3_BasicQC.sh
 ```{bash}
