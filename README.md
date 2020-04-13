@@ -33,6 +33,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 
 BiocManager::install("SNPRelate")
+
+Install.packages('umap')
 ```
 
 5. File check for Michigan/TOPMED imputation server (in terminal)
