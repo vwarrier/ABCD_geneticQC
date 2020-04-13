@@ -59,9 +59,7 @@ Rscript 1_updatefam.R
 ```
 
 ### Step 2: Check Genomic Build
-This will create a genomic build file. Ideally, we want to work with hg19 as the 1000 Genomes file is hg19. 
-
-
+This will create a genomic build file. Ideally, we want to work with hg19 as the 1000 Genomes file is hg19. Read the bim file and compare the positions of the first few SNPs in dbSNPs. No specific scripts for this available. I did this in R. 
 
 ### Step 3: Run SNP level and sample-level QC
 Basic SNP level and sample level QC excluding HWE at a SNP level and excessive heterogeneity at a sample level due to multiple ancestries.
