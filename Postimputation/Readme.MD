@@ -15,6 +15,12 @@ Details are available here: https://www.ncbi.nlm.nih.gov/variation/docs/human_va
 Download the right file from: ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/
 
 
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/common_all_20170710.vcf.gz
-zgrep -v "^##" common_all_20170710.vcf.gz | cut -f1-3 > fileforrecoding.txt
-awk '{print $1":"$2"\t"$3}' < fileforrecoding.txt > plinkrecodingfile.txt
+wget -c ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/00-All.vcf.gz
+wget -c ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606/VCF/00-All.vcf.gz.tbi
+
+Download SNPSift
+
+for i in {1..22}; do java -jar ./snpEff/SnpSift.jar annotate 00-All.vcf.gz chr${i}.dose.vcf.gz |gzip -c >  chr${i}.dose.id.vcf.gz; done 
+zcat ${target} |grep -v "#" |cut -f3 |perl -pe 's/:/\t/g;s/;/\t/' |awk '{OFS="\t"}{print $1":"$2":"$3":"$4,$1,$2,$3,$4,$5}'> ${tsvf}
+mv ${tsvf} ${tsvf}.tmp
+cat ${tsvf}.tmp |awk '{OFS="\t"}{if($6==""){print $0"\t"$1}else{$6=$1"_"$6;print $0}}' > ${tsvf}
