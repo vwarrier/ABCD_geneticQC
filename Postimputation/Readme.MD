@@ -61,7 +61,7 @@ write.table(fileimputed[,c("oldFID", "oldIID", "FID", "IID")], file = "updatefam
 for i in {1..22}; do ./plink --bfile ./Plink_files/ABCD_chr${i}_v2  --update-ids updatefamenames.txt --make-bed --out ./Plink_files/ABCD_chr${i}_v3; done
 ```
 ## Step 4: Liftover to hg19
-# Get the chain file, get liftover and liftoverplink.py into the same folder as all other files
+Get the chain file, get liftover and liftoverplink.py into the same folder as all other files
 
 ```{bash}
 # Convert plink binary to map and ped
