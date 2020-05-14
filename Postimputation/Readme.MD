@@ -42,7 +42,7 @@ write.table(plink_recoding_file[,c("V2", "ID")], file = "plinkrecodingfile2.txt"
 for i in {1..22}; do ./plink --bfile ./Plink_files/ABCD_chr${i}  --update-name plinkrecodingfile2.txt --make-bed --out ./Plink_files/ABCD_chr${i}_v2; done
 ```
 ## Step 3: Update family names
-````{R}
+```{R}
 library(data.table)
 library(tidyr)
 
