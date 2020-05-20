@@ -15,31 +15,14 @@ Details are available here: https://www.ncbi.nlm.nih.gov/variation/docs/human_va
 Download the right file from: ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b150_GRCh38p7/VCF/
 
 ```{bash}
-wget ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b150_GRCh37p13/VCF/common_all_20170710.vcf.gz
-zgrep -v "^##" common_all_20170710.vcf.gz | cut -f1-3 > fileforrecoding.txt
-awk '{print $1":"$2"\t"$3}' < fileforrecoding.txt > plinkrecodingfile.txt
-```
-```{R}
-bim22 = fread("./Plink_files/ABCD_chr22.bim")
-bim22$CHROM_POS = paste(bim22$V1, bim22$V4, sep = ":")
-bim22_update = bim22[, c("CHROM_POS", "V2")]
-update = bim22_update
-
-for (i in 1:21){
-  bim = fread(paste0("./Plink_files/ABCD_chr", i, ".bim"))
-  bim$CHROM_POS = paste(bim$V1, bim$V4, sep = ":")
-  bim_update = bim[, c("CHROM_POS", "V2")]
-  update = rbind(update, bim_update)
-}
-
-plink_recoding = fread("plinkrecodingfile.txt")
-plink_recoding_file = merge(plink_recoding, update, by.x = "#CHROM:POS", by.y = "CHROM_POS")
-plink_recoding_file = plink_recoding_file[!duplicated(plink_recoding_file$V2), ]
-
-write.table(plink_recoding_file[,c("V2", "ID")], file = "plinkrecodingfile2.txt", col.names = T, row.names = F, quote = F)
+run 2a_update.sh
 ```
 ```{bash}
-for i in {1..22}; do ./plink --bfile ./Plink_files/ABCD_chr${i}  --update-name plinkrecodingfile2.txt --make-bed --out ./Plink_files/ABCD_chr${i}_v2; done
+Rscript 2b_updatenames.R
+```
+
+```{bash}
+run 2c_updatenames.R
 ```
 ## Step 3: Update family names
 ```{R}
