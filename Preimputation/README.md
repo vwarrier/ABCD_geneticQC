@@ -118,3 +118,13 @@ This is the final pre-imputation step. We  clean the plink binary to make it rea
 run 9_finalstep.sh
 ```
 
+### Step 10: Create PCs for using the cleaned version of the dataset
+We will now return back to genesis to create PCs for the cleaned version of the dataset, that can then be used in the analyses. We will keep only the individuals in ABCD and SNPs with maf > 1% and generate both relatedness and PCs.
+
+```{bash}
+run 10a_PCs.sh
+```
+
+```{bash}
+Rscript 10b_PCs.R
+```
