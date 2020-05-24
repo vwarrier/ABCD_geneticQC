@@ -55,4 +55,19 @@ for i in {1..22}; do python2 liftOverPlink.py -m ./ABCD_chr${i}_v4.map -p ./ABCD
 ```
 
 
+## Step 5: Convert to bed and remove final incosistencies
+We need to convert it to bed and remove some incosistencies in chromosome names
+
+```{bash}
+for i in {1..22}; do ./plink --file ABCD_chr{i}_hg19 --make-bed --out ABCD_chr${i}_hg19 --allow-extra-chr; done
+```
+
+```{R}
+for (i in 1:22){
+  data1 = fread(paste0("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chr",i,"_hg19.bim"))
+  data1$V1 = i
+  write.table(data1, file = paste0("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chr",i,"_hg19.bim"), row.names = F, col.names = F, quote = F)
+}
+```
+
 
