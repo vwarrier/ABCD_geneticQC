@@ -70,4 +70,13 @@ for (i in 1:22){
 }
 ```
 
+## Additional step: combine into 1 file for polygenic scoring
+```{bash}
+./plink --bfile ABCD_chr1_hg19 --merge-list ABCD_merge.txt --maf 0.001 --make-bed --out ABCD_hg19_allchrs --threads 10
+for i in {1..22}; do ./plink --bfile ABCD_chr${i}_hg19 --exclude ABCD_hg19_allchrs-merge.missnp --maf 0.001 --make-bed --out ABCD_chr${i}_hg19_v2 --threads 10; done
+./plink --bfile ABCD_chr1_hg19_v2 --merge-list ABCD_merge.txt --maf 0.001 --make-bed --out ABCD_hg19_allchrs --threads 10
+
+for i in {1..22}; do rm ABCD_chr${i}_hg19_v2*; done
+
+```
 
