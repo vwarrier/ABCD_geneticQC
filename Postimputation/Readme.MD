@@ -91,6 +91,7 @@ bimX = fread("./Plink_files/ABCD_chrX.bim")
 bimX$CHROM_POS = paste(bimX$V1, bimX$V4, sep = ":")
 bimX_update = bimX[, c("CHROM_POS", "V2")]
 update = bimX_update
+update$CHROM_POS = gsub("23:", "X:",update$CHROM_POS)
 
 
 plink_recoding = fread("plinkrecodingfile.txt")
