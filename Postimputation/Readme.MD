@@ -105,6 +105,11 @@ write.table(plink_recoding_file[,c("V2", "ID")], file = "plinkrecodingfile2_forX
 ./plink --bfile ./Plink_files/ABCD_chrX  --update-name plinkrecodingfile2_forX.txt --make-bed --out ./Plink_files/ABCD_chrX_v2
 ./plink --bfile ./Plink_files/ABCD_chrX_v2  --update-ids updatefamenames.txt --make-bed --out ./Plink_files/ABCD_chrX_v3
 ./plink --bfile ./Plink_files/ABCD_chrX_v3  --recode --out ./Plink_files/ABCD_chrX_v4
+```
+
+You need to update the chromosome in the map file from 23 to X. Do it in R. 
+
+```{bash}
 python2 liftOverPlink.py -m ./ABCD_chrX_v4.map -p ./ABCD_chrX_v4.ped  -o ./ABCD_chrX_hg19 -e ./liftOver -c ./hg38ToHg19.over.chain.gz
 ./plink --file ABCD_chrX_hg19 --make-bed --out ABCD_chrX_hg19 --allow-extra-chr
 ```
