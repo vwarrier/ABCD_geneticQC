@@ -70,6 +70,54 @@ for (i in 1:22){
 }
 ```
 
+# Step 6: Repeat the whole process for the X chromosome
+## In R
+  a = fread("chrX.info", header = T)
+  a$Rsq = as.numeric(as.character(a$Rsq))
+  b = subset(a, Rsq > 0.3)
+  b = subset(b, ALT_Frq > 0.001 & ALT_Frq < 0.999)
+  write.table(b[,1], file = "chrXextract.txt", row.names = F, col.names = T, quote = F)
+
+## In bash
+ ./plink --vcf chrX.dose.vcf.gz --make-bed --out ./Plink_files/ABCD_chrX  --extract chrXextract.txt --const-fid 0
+ 
+ ## In R
+library(data.table)
+bimX = fread("./Plink_files/ABCD_chrX.bim")
+bimX$CHROM_POS = paste(bimX$V1, bimX$V4, sep = ":")
+bimX_update = bimX[, c("CHROM_POS", "V2")]
+update = bimX_update
+
+
+plink_recoding = fread("plinkrecodingfile.txt")
+plink_recoding_file = merge(plink_recoding, update, by.x = "#CHROM:POS", by.y = "CHROM_POS")
+plink_recoding_file = plink_recoding_file[!duplicated(plink_recoding_file$V2), ]
+
+write.table(plink_recoding_file[,c("V2", "ID")], file = "plinkrecodingfile2_forX.txt", col.names = T, row.names = F, quote = F)
+
+## In bash
+./plink --bfile ./Plink_files/ABCD_chrX  --update-name plinkrecodingfile2_forX.txt --make-bed --out ./Plink_files/ABCD_chrX_v2
+
+## In bash
+./plink --bfile ./Plink_files/ABCD_chrX_v2  --update-ids updatefamenames.txt --make-bed --out ./Plink_files/ABCD_chrX_v3
+./plink --bfile ./Plink_files/ABCD_chrX_v3  --recode --out ./Plink_files/ABCD_chrX_v4
+python2 liftOverPlink.py -m ./ABCD_chrX_v4.map -p ./ABCD_chrX_v4.ped  -o ./ABCD_chrX_hg19 -e ./liftOver -c ./hg38ToHg19.over.chain.gz
+./plink --file ABCD_chrX_hg19 --make-bed --out ABCD_chrX_hg19 --allow-extra-chr
+
+## In R
+data1 = fread("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chrX_hg19.bim")
+data1$V1 = X
+write.table(data1, file = "~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chrX_hg19.bim"), row.names = F, col.names = F, quote = F)
+
+
+
+
+
+
+
+
+
+
 ## Additional step: combine into 1 file for polygenic scoring
 ```{bash}
 ./plink --bfile ABCD_chr1_hg19 --merge-list ABCD_merge.txt --maf 0.001 --make-bed --out ABCD_hg19_allchrs --threads 10
