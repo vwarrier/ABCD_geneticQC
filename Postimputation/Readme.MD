@@ -124,5 +124,8 @@ for i in {1..22}; do ./plink --bfile ABCD_chr${i}_hg19 --exclude ABCD_hg19_allch
 
 for i in {1..22}; do rm ABCD_chr${i}_hg19_v2*; done
 
+#Retain European
+./plink --bfile ABCD_hg19_allchrs --keep ~/ABCD/ABCDgenotype/GWAS/QC4_european_grm.grm.id --make-bed --out ABCD_hg19_allchrs_europeanonly --maf 0.001 --threads 15
+
 ```
 
