@@ -65,7 +65,7 @@ for i in {1..22}; do ./plink --file ABCD_chr{i}_hg19 --make-bed --out ABCD_chr${
 ```{R}
 for (i in 1:22){
   data1 = fread(paste0("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chr",i,"_hg19.bim"))
-  data1$V1 = i
+  subset(data1, V1 == i)
   write.table(data1, file = paste0("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chr",i,"_hg19.bim"), row.names = F, col.names = F, quote = F)
 }
 ```
@@ -117,7 +117,7 @@ python2 liftOverPlink.py -m ./ABCD_chrX_v4.map -p ./ABCD_chrX_v4.ped  -o ./ABCD_
 ## In R
 ```{R}
 data1 = fread("~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chrX_hg19.bim")
-data1$V1 = X
+subset(data1, V1 == X)
 write.table(data1, file = "~/ABCD/ABCDgenotype/Genotype_postimputation/TOPMED/Plink_files/ABCD_chrX_hg19.bim"), row.names = F, col.names = F, quote = F)
 ```
 
